@@ -1,5 +1,5 @@
 import express from 'express'
-import router from './route.js'
+
 
 const app = express()
 
@@ -11,33 +11,27 @@ app.get('/', (req,res)=>{
 
 })
 
-app.use('/user', router)
+// /users/nameid
 
 
-
-
-app.post('/users', express.json(), (req, res) => {
-   const { name, email } = req.body;
-   res.json({
-      message: `user ${name} with email ${email} created successfully`
-   });
-});
-
-
-app.put('/users/:id', (req,res)=>{
-    const usersId = req.params.id
-    const { name,email } = req.body
+app.get('/things/:name/:id([0-9]{5})',(req,res)=>{
+    const {name,id} = req.params
     res.json({
-        message: `user ${usersId} updated successfully`
-    });
-});
+        id,
+        name
+    })
+})
 
-app.delete('/users/:id',(req,res)=>{
-    const userId = req.params.id
-    res.json({
-        message: `user with ID ${userId} deleted successfully`
-    });
-});
+
+app.get('*',(req,res)=>{
+    res.send('sorry, this is invalid URL.')
+})
+
+app.use((req,res,next)=>{
+    console.log('A new request received at'+Date.now())
+    next()
+})
+
 
 app.listen(port,()=>{
     console.log(`Server is running on http://localhost:${port}`)
