@@ -14,6 +14,8 @@ app.get('/', (req,res)=>{
 app.use('/user', router)
 
 
+
+
 app.post('/users', express.json(), (req, res) => {
    const { name, email } = req.body;
    res.json({
@@ -27,6 +29,13 @@ app.put('/users/:id', (req,res)=>{
     const { name,email } = req.body
     res.json({
         message: `user ${usersId} updated successfully`
+    });
+});
+
+app.delete('/users/:id',(req,res)=>{
+    const userId = req.params.id
+    res.json({
+        message: `user with ID ${userId} deleted successfully`
     });
 });
 
