@@ -1,26 +1,26 @@
-import express from 'express'
-import multer from 'multer'
+// server.js or index.js
+import express from 'express';
+import { connectDB } from './config/db.js';
 
-const app = express()
-const upload = multer()
-const port = 3007
 
-app.use(express.urlencoded({extended:true}))
-app.use(upload.single('image'))
+const app = express();
+const PORT = 3001;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+connectDB(); 
 
 app.get('/', (req, res) => {
-    res.send('hello Express')
- 
+  res.send('Hello Express');
 });
-app.post('/form',(req,res)=>{
-    console.log(req.body)
-    res.send('form Received')
-})
+
+app.post('/person', express.json(), (req, res) => {
+  console.log(req.body);
+  res.send('person added');
+});
 
 
-
-
-app.listen(port,()=>{
-    console.log(`Server is running on http://localhost:${port}`)
-})
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
+});
