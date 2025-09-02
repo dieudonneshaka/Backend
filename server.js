@@ -1,36 +1,24 @@
 import express from 'express'
-
+import multer from 'multer'
 
 const app = express()
-
+const upload = multer()
 const port = 3007
 
-//Define a simple route
-app.get('/', (req,res)=>{
-    res.send('hello, Express')
-
-})
-
-// /users/nameid
+app.use(express.urlencoded({extended:true}))
+app.use(upload.single('image'))
 
 
-app.get('/things/:name/:id([0-9]{5})',(req,res)=>{
-    const {name,id} = req.params
-    res.json({
-        id,
-        name
-    })
+app.get('/', (req, res) => {
+    res.send('hello Express')
+ 
+});
+app.post('/form',(req,res)=>{
+    console.log(req.body)
+    res.send('form Received')
 })
 
 
-app.get('*',(req,res)=>{
-    res.send('sorry, this is invalid URL.')
-})
-
-app.use((req,res,next)=>{
-    console.log('A new request received at'+Date.now())
-    next()
-})
 
 
 app.listen(port,()=>{
