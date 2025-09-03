@@ -1,26 +1,21 @@
-// server.js or index.js
 import express from 'express';
-import { connectDB } from './config/db.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connectDB from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import activityRoutes from './routes/activityRoutes.js';
 
+dotenv.config();
 
 const app = express();
-const PORT = 3001;
+connectDB();
 
-// Middleware to parse JSON bodies
+app.use(cors());
 app.use(express.json());
 
-connectDB(); 
+app.use('/api/auth', authRoutes);
+app.use('/api/activities', activityRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello Express');
-});
+const PORT = process.env.PORT || 3001;
 
-app.post('/person', express.json(), (req, res) => {
-  console.log(req.body);
-  res.send('person added');
-});
-
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
